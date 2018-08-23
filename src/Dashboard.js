@@ -1,7 +1,7 @@
 import React from 'react';
 import {CoinGrid, CoinTile, CoinHeaderGrid, CoinSymbol} from "./CoinList";
 import styled, {css} from 'styled-components';
-import {fontSizeBig, fontSize3} from "./Style";
+import {fontSizeBig, fontSize3, subtleBoxShadow, lightBlueBackground} from "./Style";
 
 const numberFormat = (number) => {
 	return +(number + '').slice(0, 7);
@@ -25,12 +25,33 @@ const CoinTileCompact = CoinTile.extend`
 	grid-template-columns: repeat(3, 1fr); 	
 `
 
+const PaddingBlue = styled.div`
+	${subtleBoxShadow}
+	${lightBlueBackground}
+	padding: 5px; 
+`
+
+const ChartGrid = styled.div`
+	display: grid; 
+	margin-top: 20px; 
+	grid-gap: 15px; 
+	grid-template-columns: 1fr 3fr; 
+`
+
 export default function(){
-	return <CoinGrid>
-		{this.state.prices.map((price, index) => {
+	let self = this;
+
+	return [<CoinGrid>
+		{this.state.prices.map(function(price, index){
 			let sym = Object.keys(price)[0];
 			let data = price[sym]['USD'];
-			return index < 5 ? <CoinTile>
+			let tileProps = {
+				dashboardFavorite: sym === self.state.currentFavorite,
+				onClick: () => {
+					self.setState({currentFavorite: sym});
+				}
+			}
+			return index < 5 ? <CoinTile {...tileProps}>
 				<CoinHeaderGrid>
 					<div> {sym}</div>
 					<CoinSymbol>
@@ -41,9 +62,9 @@ export default function(){
 				</CoinHeaderGrid>
 				<TickerPrice>${numberFormat(data.PRICE)} </TickerPrice>
 				</CoinTile> :
-				 <CoinTileCompact>
+				 <CoinTileCompact {...tileProps}>
 					 <div> {sym}</div>
-					 <CoinSymbol>
+					 <CoinSymbol >
 						 <ChangePct red={data.CHANGEPCT24HOUR < 0}>
 							 {numberFormat(data.CHANGEPCT24HOUR)}%
 						 </ChangePct>
@@ -52,5 +73,14 @@ export default function(){
 				 </CoinTileCompact>
 
 		})}
-	</CoinGrid>
+	</CoinGrid>,
+		<ChartGrid>
+			<PaddingBlue>
+				<h2>{this.state.coinList[this.state.currentFavorite].CoinName}</h2>
+				<img style={{height: '200px'}} src={`http://cryptocompare.com/${this.state.coinList[this.state.currentFavorite].ImageUrl}`} />
+			</PaddingBlue>
+			<PaddingBlue>
+				Chart goes here..
+			</PaddingBlue>
+		</ChartGrid>]
 }
