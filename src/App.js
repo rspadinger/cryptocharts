@@ -8,6 +8,7 @@ import Dashboard from './Dashboard';
 import {ConfirmButton} from "./Button";
 import _ from 'lodash';
 import fuzzy from 'fuzzy';
+import moment from 'moment';
 
 const cc = require('cryptocompare');
 
@@ -24,6 +25,7 @@ export const CenterDiv = styled.div`
 `
 
 const MAX_FAVORITES = 10;
+const TIME_UNITS = 10;
 
 const checkFirstVisit = () => {
   let cryptoDashData = JSON.parse(localStorage.getItem('cryptoDash'));
@@ -47,7 +49,8 @@ class App extends Component {
     ...checkFirstVisit()
   }
   componentDidMount = () => {
-    this.fetchCoins();
+	  this.fetchHistorical();
+	  this.fetchCoins();
     this.fetchPrices();
   }
   fetchCoins = async () => {
@@ -61,8 +64,26 @@ class App extends Component {
     } catch(e) {
       this.setState({error: true});
     }
-    console.log(prices);
     this.setState({prices});
+  }
+  fetchHistorical = async () => {
+    if(this.state.currentFavorite){
+      let results = await this.historical();
+      console.log('Fetching for', this.state.currentFavorite);
+      let historical = [{
+        name: this.state.currentFavorite,
+        data: results.map((ticker, index) => [moment().subtract({months: TIME_UNITS - index}).valueOf(), ticker.USD])
+      }];
+      console.log('results', historical);
+      this.setState({historical});
+    }
+  }
+  historical = () => {
+    let promises = [];
+    for(let units = TIME_UNITS; units > 0; units--){
+      promises.push(cc.priceHistorical(this.state.currentFavorite, ['USD'], moment().subtract({months: units}).toDate()));
+    }
+    return Promise.all(promises);
   }
   prices = () => {
     let promises = [];
@@ -84,9 +105,12 @@ class App extends Component {
       firstVisit: false,
       page: 'dashboard',
       prices: null,
-      currentFavorite
+      currentFavorite,
+      historical: null
+    }, () => {
+	    this.fetchPrices();
+	    this.fetchHistorical();
     });
-    this.fetchPrices();
 	  localStorage.setItem('cryptoDash', JSON.stringify({
       favorites: this.state.favorites,
       currentFavorite
