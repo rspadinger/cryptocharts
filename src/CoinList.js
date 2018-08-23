@@ -1,26 +1,43 @@
 import React from 'react';
 import styled from 'styled-components';
+import {subtleBoxShadow, greenBoxShadow, lightBlueBackground} from "./Style";
 
 const CoinGrid = styled.div`
 	display: grid; 
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-gap: 15px; 
+	margin-top: 40px; 
 `
 
 const CoinTile = styled.div`
-	border: 1px solid white; 
+	${subtleBoxShadow}
+  ${lightBlueBackground}
 	padding: 10px; 
 	&:hover{
 		cursor: pointer; 
-		color: blue; 
+		${greenBoxShadow}
 	}
 `
 
+const CoinHeaderGrid = styled.div`
+	display: grid; 
+	grid-template-columns: 1fr 1fr; 
+`
+
+const CoinSymbol = styled.div`
+	justify-self: right; 
+`
+
 export default function(){
+	console.log('CoinSample', this.state.coinList['BTC']);
 	return <CoinGrid>
-		{Object.keys(this.state.coinList).map(coin =>
+		{Object.keys(this.state.coinList).slice(0, 100).map(coin =>
 			<CoinTile>
-				{coin}
+				<CoinHeaderGrid>
+					<div> {this.state.coinList[coin].CoinName}</div>
+					<CoinSymbol> {this.state.coinList[coin].Symbol}</CoinSymbol>
+				</CoinHeaderGrid>
+				<img style={{height: '50px'}} src={`http://cryptocompare.com/${this.state.coinList[coin].ImageUrl}`} />
 		</CoinTile>
 		)}
 	</CoinGrid>
