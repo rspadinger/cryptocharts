@@ -6,7 +6,7 @@ import highchartsConfig from './HighchartsConfig';
 import theme from './HighchartsTheme';
 const ReactHighcharts = require('react-highcharts');
 
-ReactHighcharts.Highcharts.setOptions(theme());
+ReactHighcharts.Highcharts.setOptions(theme);
 
 const numberFormat = (number) => {
 	return +(number + '').slice(0, 7);
