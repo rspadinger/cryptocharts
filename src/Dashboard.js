@@ -55,17 +55,15 @@ const ChartGrid = styled.div`
 `
 
 export default function(){
-	let self = this;
-
 	return [<CoinGrid key={'coingrid'}>
-		{this.state.prices.map(function(price, index){
+		{this.state.prices.map((price, index) => {
 			let sym = Object.keys(price)[0];
 			let data = price[sym]['USD'];
 			let tileProps = {
 				key: sym,
-				dashboardFavorite: sym === self.state.currentFavorite,
+				dashboardFavorite: sym === this.state.currentFavorite,
 				onClick: () => {
-					self.setState({currentFavorite: sym, historical: null}, self.fetchHistorical);
+					this.setState({currentFavorite: sym, historical: null}, this.fetchHistorical);
 					localStorage.setItem('cryptoDash', JSON.stringify({
 						...JSON.parse(localStorage.getItem('cryptoDash')),
 						currentFavorite: sym,
