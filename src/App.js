@@ -58,7 +58,8 @@ class App extends Component {
     this.setState({ coinList });
   }
   fetchPrices = async () => {
-    let prices;
+	  if(this.state.firstVisit) return;
+	  let prices;
     try {
       prices = await this.prices();
     } catch(e) {
@@ -67,16 +68,13 @@ class App extends Component {
     this.setState({prices});
   }
   fetchHistorical = async () => {
-    if(this.state.currentFavorite){
-      let results = await this.historical();
-      console.log('Fetching for', this.state.currentFavorite);
-      let historical = [{
-        name: this.state.currentFavorite,
-        data: results.map((ticker, index) => [moment().subtract({months: TIME_UNITS - index}).valueOf(), ticker.USD])
-      }];
-      console.log('results', historical);
-      this.setState({historical});
-    }
+	  if(this.state.firstVisit) return;
+	  let results = await this.historical();
+    let historical = [{
+      name: this.state.currentFavorite,
+      data: results.map((ticker, index) => [moment().subtract({months: TIME_UNITS - index}).valueOf(), ticker.USD])
+    }];
+    this.setState({historical});
   }
   historical = () => {
     let promises = [];
@@ -135,7 +133,7 @@ class App extends Component {
     if(!this.state.coinList){
       return <div> Loading Coins </div>
     }
-    if(!this.state.prices){
+    if(!this.state.firstVisit && !this.state.prices){
       return <div> Loading Prices </div>
     }
   }
