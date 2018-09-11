@@ -52,7 +52,7 @@ const CoinTileCompact = CoinTile.extend`
 const PaddingBlue = styled.div`
   ${subtleBoxShadow} 
   ${lightBlueBackground}
-	padding: 5px;
+	padding: 10px;
 `;
 
 const ChartGrid = styled.div`
