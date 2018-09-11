@@ -1,7 +1,7 @@
 import React from 'react';
 import {CoinGrid, CoinTile, CoinHeaderGrid, CoinSymbol} from "./CoinList";
 import styled, {css} from 'styled-components';
-import {fontSizeBig, fontSize3, subtleBoxShadow, lightBlueBackground} from "./Style";
+import {fontSizeBig, fontSize3, subtleBoxShadow, lightBlueBackground, fontSize2, backgroundColor2} from "./Style";
 import highchartsConfig from './HighchartsConfig';
 import theme from './HighchartsTheme';
 const ReactHighcharts = require('react-highcharts');
@@ -11,6 +11,17 @@ ReactHighcharts.Highcharts.setOptions(theme);
 const numberFormat = (number) => {
 	return +(number + '').slice(0, 7);
 }
+
+
+const ChartSelect = styled.select`
+	${backgroundColor2}
+  color: #1163c9;
+  border: 1px solid;
+  ${fontSize2}
+  margin: 5px;
+  height: 25px;
+	float: right; 
+`
 
 const ChangePct = styled.div`
 	color: green; 
@@ -89,6 +100,14 @@ export default function(){
 				<img style={{height: '200px'}} src={`http://cryptocompare.com/${this.state.coinList[this.state.currentFavorite].ImageUrl}`} />
 			</PaddingBlue>
 			<PaddingBlue>
+				<ChartSelect onChange={(e)=>{
+					this.setState({timeInterval: e.target.value, historical: null});
+					this.fetchHistorical();
+				}}>
+					<option value="days">Days</option>
+					<option value="weeks">Weeks</option>
+					<option selected value="months">Months</option>
+				</ChartSelect>
 				{this.state.historical ?
 					<ReactHighcharts config={highchartsConfig.call(this)}/>
 					: <div> Loading historical data </div>}

@@ -46,6 +46,7 @@ class App extends Component {
   state = {
     page: 'dashboard',
     favorites: ['ETH', 'BTC', 'XMR', 'DOGE', 'EOS'],
+    timeInterval: 'months',
     ...checkFirstVisit()
   }
   componentDidMount = () => {
@@ -72,14 +73,14 @@ class App extends Component {
 	  let results = await this.historical();
     let historical = [{
       name: this.state.currentFavorite,
-      data: results.map((ticker, index) => [moment().subtract({months: TIME_UNITS - index}).valueOf(), ticker.USD])
+      data: results.map((ticker, index) => [moment().subtract({[this.state.timeInterval]: TIME_UNITS - index}).valueOf(), ticker.USD])
     }];
     this.setState({historical});
   }
   historical = () => {
     let promises = [];
     for(let units = TIME_UNITS; units > 0; units--){
-      promises.push(cc.priceHistorical(this.state.currentFavorite, ['USD'], moment().subtract({months: units}).toDate()));
+      promises.push(cc.priceHistorical(this.state.currentFavorite, ['USD'], moment().subtract({[this.state.timeInterval]: units}).toDate()));
     }
     return Promise.all(promises);
   }
