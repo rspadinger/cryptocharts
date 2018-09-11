@@ -1,52 +1,52 @@
-export default function(){
-	return {
+export default function() {
+  return {
+    title: {
+      text: ''
+    },
 
-		title: {
-			text: ''
-		},
+    subtitle: {
+      text: ''
+    },
 
-		subtitle: {
-			text: ''
-		},
+    yAxis: {
+      title: {
+        text: 'Price'
+      }
+    },
+    xAxis: { type: 'datetime' },
 
-		yAxis: {
-			title: {
-				text: 'Price'
-			}
-		},
-		xAxis: {type: 'datetime'},
+    legend: {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle'
+    },
 
-		legend: {
-			layout: 'vertical',
-			align: 'right',
-			verticalAlign: 'middle'
-		},
+    plotOptions: {
+      series: {
+        label: {
+          connectorAllowed: false
+        },
+        pointStart: 2010
+      }
+    },
 
-		plotOptions: {
-			series: {
-				label: {
-					connectorAllowed: false
-				},
-				pointStart: 2010
-			}
-		},
+    series: this.state.historical,
 
-		series: this.state.historical,
-
-		responsive: {
-			rules: [{
-				condition: {
-					maxWidth: 500
-				},
-				chartOptions: {
-					legend: {
-						layout: 'horizontal',
-						align: 'center',
-						verticalAlign: 'bottom'
-					}
-				}
-			}]
-		}
-
-	};
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 500
+          },
+          chartOptions: {
+            legend: {
+              layout: 'horizontal',
+              align: 'center',
+              verticalAlign: 'bottom'
+            }
+          }
+        }
+      ]
+    }
+  };
 }
