@@ -11,9 +11,11 @@ const SearchContainer = styled.div`
 `;
 
 const SearchInput = styled.input`
-  ${backgroundColor2} color: #1163c9;
+  ${backgroundColor2} 
+  color: #1163c9;
   border: 1px solid;
-  ${fontSize2} margin: 5px;
+  ${fontSize2} 
+  margin: 5px;
   height: 25px;
   place-self: center left;
 `;

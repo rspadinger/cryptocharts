@@ -20,9 +20,11 @@ const numberFormat = number => {
 };
 
 const ChartSelect = styled.select`
-  ${backgroundColor2} color: #1163c9;
+  ${backgroundColor2} 
+  color: #1163c9;
   border: 1px solid;
-  ${fontSize2} margin: 5px;
+  ${fontSize2} 
+  margin: 5px;
   height: 25px;
   float: right;
 `;
@@ -41,13 +43,15 @@ const TickerPrice = styled.div`
 `;
 
 const CoinTileCompact = CoinTile.extend`
-  ${fontSize3} display: grid;
+  ${fontSize3} 
+  display: grid;
   grid-gap: 5px;
   grid-template-columns: repeat(3, 1fr);
 `;
 
 const PaddingBlue = styled.div`
-  ${subtleBoxShadow} ${lightBlueBackground}
+  ${subtleBoxShadow} 
+  ${lightBlueBackground}
 	padding: 5px;
 `;
 

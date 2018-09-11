@@ -14,7 +14,8 @@ export const CoinGrid = styled.div`
     props.count &&
     css`
       grid-template-columns: repeat(${props.count > 5 ? props.count : 5}, 1fr);
-    `} grid-gap: 15px;
+    `} 
+  grid-gap: 15px;
   margin-top: 40px;
 `;
 
