@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { backgroundColor2, fontSize2 } from './Style';
-import { WhiteText } from './Text';
 
 const SearchContainer = styled.div`
   margin-top: 40px;
@@ -23,7 +22,7 @@ const SearchInput = styled.input`
 export default function() {
   return (
     <SearchContainer>
-      <WhiteText> Search all coins </WhiteText>
+      <h2> Search all coins </h2>
       <SearchInput onKeyUp={this.filterCoins} />
     </SearchContainer>
   );
