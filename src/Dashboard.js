@@ -57,11 +57,12 @@ const ChartGrid = styled.div`
 export default function(){
 	let self = this;
 
-	return [<CoinGrid>
+	return [<CoinGrid key={'coingrid'}>
 		{this.state.prices.map(function(price, index){
 			let sym = Object.keys(price)[0];
 			let data = price[sym]['USD'];
 			let tileProps = {
+				key: sym,
 				dashboardFavorite: sym === self.state.currentFavorite,
 				onClick: () => {
 					self.setState({currentFavorite: sym, historical: null}, self.fetchHistorical);
@@ -94,19 +95,21 @@ export default function(){
 
 		})}
 	</CoinGrid>,
-		<ChartGrid>
+		<ChartGrid key={'chartgrid'}>
 			<PaddingBlue>
 				<h2>{this.state.coinList[this.state.currentFavorite].CoinName}</h2>
-				<img style={{height: '200px'}} src={`http://cryptocompare.com/${this.state.coinList[this.state.currentFavorite].ImageUrl}`} />
+				<img alt={this.state.currentFavorite} style={{height: '200px'}} src={`http://cryptocompare.com/${this.state.coinList[this.state.currentFavorite].ImageUrl}`} />
 			</PaddingBlue>
 			<PaddingBlue>
-				<ChartSelect onChange={(e)=>{
+				<ChartSelect
+					defaultValue={'months'}
+					onChange={(e)=>{
 					this.setState({timeInterval: e.target.value, historical: null});
 					this.fetchHistorical();
 				}}>
 					<option value="days">Days</option>
 					<option value="weeks">Weeks</option>
-					<option selected value="months">Months</option>
+					<option value="months">Months</option>
 				</ChartSelect>
 				{this.state.historical ?
 					<ReactHighcharts config={highchartsConfig.call(this)}/>

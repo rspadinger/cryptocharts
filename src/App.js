@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import AppBar from './AppBar';
 import CoinList from './CoinList';
 import Search from './Search';
