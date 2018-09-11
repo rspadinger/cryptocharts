@@ -45,7 +45,7 @@ const checkFirstVisit = () => {
 class App extends Component {
   state = {
     page: 'dashboard',
-    favorites: ['ETH', 'BTC', 'XMR', 'DOGE', 'EOS'],
+    favorites: ['ETH', 'BTC', 'XMR', 'DOGE', 'hdsjh'],
     timeInterval: 'months',
     ...checkFirstVisit()
   }
@@ -54,18 +54,22 @@ class App extends Component {
 	  this.fetchCoins();
     this.fetchPrices();
   }
+  validateFavorites = (coinList) => {
+    let validatedFavorites = [];
+    this.state.favorites.forEach(favorite => {
+      if(coinList[favorite]){
+        validatedFavorites.push(favorite);
+      }
+    });
+    return validatedFavorites;
+  }
   fetchCoins = async () => {
     let coinList = (await cc.coinList()).Data;
-    this.setState({ coinList });
+    this.setState({ coinList, favorites: this.validateFavorites(coinList) });
   }
   fetchPrices = async () => {
 	  if(this.state.firstVisit) return;
-	  let prices;
-    try {
-      prices = await this.prices();
-    } catch(e) {
-      this.setState({error: true});
-    }
+	  let prices = await this.prices();
     this.setState({prices});
   }
   fetchHistorical = async () => {
@@ -84,12 +88,17 @@ class App extends Component {
     }
     return Promise.all(promises);
   }
-  prices = () => {
-    let promises = [];
-    this.state.favorites.forEach(sym => {
-      promises.push(cc.priceFull(sym, 'USD'));
-    })
-    return Promise.all(promises);
+  prices = async () => {
+    let returnData = [];
+    for(let i = 0; i < this.state.favorites.length; i++){
+      try {
+	      let priceData = await cc.priceFull(this.state.favorites[i], 'USD');
+	      returnData.push(priceData);
+      } catch(e){
+        console.warn('Fetch price error: ', e);
+      }
+    }
+    return returnData;
   }
   displayingDashboard = () => this.state.page === 'dashboard'
   displayingSettings = () => this.state.page === 'settings'
