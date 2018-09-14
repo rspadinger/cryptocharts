@@ -125,8 +125,7 @@ export default function() {
         <ChartSelect
           defaultValue={'months'}
           onChange={e => {
-            this.setState({ timeInterval: e.target.value, historical: null });
-            this.fetchHistorical();
+            this.setState({ timeInterval: e.target.value, historical: null }, this.fetchHistorical);
           }}
         >
           <option value="days">Days</option>
