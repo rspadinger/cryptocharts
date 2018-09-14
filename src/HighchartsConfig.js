@@ -3,7 +3,9 @@ export default function() {
     title: {
       text: ''
     },
-
+	  chart: {
+		  height: '400px'
+	  },
     subtitle: {
       text: ''
     },
