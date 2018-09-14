@@ -47,6 +47,7 @@ const CoinTileCompact = CoinTile.extend`
   display: grid;
   grid-gap: 5px;
   grid-template-columns: repeat(3, 1fr);
+  justify-items: right; 
 `;
 
 const PaddingBlue = styled.div`
@@ -99,7 +100,7 @@ export default function() {
           </CoinTile>
         ) : (
           <CoinTileCompact {...tileProps}>
-            <div> {sym}</div>
+            <div style={{justifySelf: 'left'}}> {sym}</div>
             <CoinSymbol>
               <ChangePct red={data.CHANGEPCT24HOUR < 0}>
                 {numberFormat(data.CHANGEPCT24HOUR)}%
