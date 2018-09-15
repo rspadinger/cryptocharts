@@ -113,10 +113,10 @@ export default function() {
     </CoinGrid>,
     <ChartGrid key={'chartgrid'}>
       <PaddingBlue>
-        <h2>{this.state.coinList[this.state.currentFavorite].CoinName}</h2>
+        <h2 style={{textAlign: 'center'}}>{this.state.coinList[this.state.currentFavorite].CoinName}</h2>
         <img
           alt={this.state.currentFavorite}
-          style={{ height: '200px' }}
+          style={{ height: '200px', display: 'block', margin: 'auto' }}
           src={`http://cryptocompare.com/${
             this.state.coinList[this.state.currentFavorite].ImageUrl
           }`}
