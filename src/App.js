@@ -52,6 +52,7 @@ class App extends Component {
     this.fetchCoins();
     this.fetchPrices();
   };
+
   validateFavorites = coinList => {
     let validatedFavorites = [];
     this.state.favorites.forEach(favorite => {
@@ -61,15 +62,18 @@ class App extends Component {
     });
     return validatedFavorites;
   };
+
   fetchCoins = async () => {
     let coinList = (await cc.coinList()).Data;
     this.setState({ coinList, favorites: this.validateFavorites(coinList) });
   };
+
   fetchPrices = async () => {
     if (this.state.firstVisit) return;
     let prices = await this.prices();
     this.setState({ prices });
   };
+
   fetchHistorical = async () => {
     if (this.state.firstVisit) return;
     let results = await this.historical();
@@ -86,6 +90,7 @@ class App extends Component {
     ];
     this.setState({ historical });
   };
+
   historical = () => {
     let promises = [];
     for (let units = TIME_UNITS; units > 0; units--) {
@@ -101,6 +106,7 @@ class App extends Component {
     }
     return Promise.all(promises);
   };
+
   prices = async () => {
     let returnData = [];
     for (let i = 0; i < this.state.favorites.length; i++) {
@@ -113,8 +119,10 @@ class App extends Component {
     }
     return returnData;
   };
+
   displayingDashboard = () => this.state.page === 'dashboard';
   displayingSettings = () => this.state.page === 'settings';
+
   firstVisitMessage = () => {
     if (this.state.firstVisit) {
       return (
@@ -124,6 +132,7 @@ class App extends Component {
       );
     }
   };
+
   confirmFavorites = () => {
     let currentFavorite = this.state.favorites[0];
     this.setState(
@@ -147,6 +156,7 @@ class App extends Component {
       })
     );
   };
+
   settingsContent = () => {
     return (
       <div>
@@ -164,6 +174,7 @@ class App extends Component {
       </div>
     );
   };
+
   loadingContent = () => {
     if (!this.state.coinList) {
       return <div> Loading Coins </div>;
@@ -172,6 +183,7 @@ class App extends Component {
       return <div> Loading Prices </div>;
     }
   };
+
   addCoinToFavorites = key => {
     let favorites = [...this.state.favorites];
     if (favorites.length < MAX_FAVORITES) {
@@ -179,11 +191,14 @@ class App extends Component {
       this.setState({ favorites });
     }
   };
+
   removeCoinFromFavorites = key => {
     let favorites = [...this.state.favorites];
     this.setState({ favorites: _.pull(favorites, key) });
   };
+
   isInFavorites = key => _.includes(this.state.favorites, key);
+
   handleFilter = _.debounce(inputValue => {
     // Get all the coin symbols
     let coinSymbols = Object.keys(this.state.coinList);
@@ -204,6 +219,7 @@ class App extends Component {
 
     this.setState({ filteredCoins });
   }, 500);
+
   filterCoins = e => {
     let inputValue = _.get(e, 'target.value');
     if (!inputValue) {
