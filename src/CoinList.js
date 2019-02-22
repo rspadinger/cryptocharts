@@ -75,7 +75,10 @@ export default function(favorites = false) {
   let coinKeys = favorites
     ? this.state.favorites
     : (this.state.filteredCoins && Object.keys(this.state.filteredCoins)) ||
-      Object.keys(this.state.coinList).slice(0, 100);
+      //Object.keys(this.state.coinList).slice(0, 100);
+      Object.keys(this.state.topCoinList).slice(0, 100);
+
+      //debugger
   return (
     <CoinGrid count={favorites && this.state.favorites.length}>
       {coinKeys.map(coinKey => (
@@ -93,18 +96,18 @@ export default function(favorites = false) {
           }
         >
           <CoinHeaderGrid>
-            <div> {this.state.coinList[coinKey].CoinName}</div>
+            <div> {this.state.coinList[coinKey] && this.state.coinList[coinKey].CoinName}</div>
             {favorites ? (
               <DeleteIcon>X</DeleteIcon>
             ) : (
-              <CoinSymbol> {this.state.coinList[coinKey].Symbol}</CoinSymbol>
+              <CoinSymbol> {this.state.coinList[coinKey] &&  this.state.coinList[coinKey].Symbol}</CoinSymbol>
             )}
           </CoinHeaderGrid>
           <img
             alt={coinKey}
             style={{ height: '50px' }}
             src={`http://cryptocompare.com/${
-              this.state.coinList[coinKey].ImageUrl
+              this.state.coinList[coinKey] && this.state.coinList[coinKey].ImageUrl
             }`}
           />
         </CoinTile>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import styled from 'styled-components';
 import AppBar from './AppBar';
 import CoinList from './CoinList';
@@ -11,10 +10,12 @@ import fuzzy from 'fuzzy';
 import moment from 'moment';
 
 const cc = require('cryptocompare');
+const cmc = require('coinmarketcap');
 
 const AppLayout = styled.div`
   padding: 40px;
 `;
+//hello
 
 const Content = styled.div``;
 export const CenterDiv = styled.div`
@@ -43,14 +44,16 @@ const checkFirstVisit = () => {
 class App extends Component {
   state = {
     page: 'dashboard',
-    favorites: ['ETH', 'BTC', 'XMR', 'DOGE', 'hdsjh'],
+    favorites: ['BTC', 'ETH', 'ADA', 'NEM'],
     timeInterval: 'months',
     ...checkFirstVisit()
   };
+
   componentDidMount = () => {
     this.fetchHistorical();
     this.fetchCoins();
     this.fetchPrices();
+    this.fetchTopCoins();
   };
 
   validateFavorites = coinList => {
@@ -63,9 +66,29 @@ class App extends Component {
     return validatedFavorites;
   };
 
-  fetchCoins = async () => {
-    let coinList = (await cc.coinList()).Data;
+  fetchCoins = async () => {    
+    let coinList = ( await cc.coinList()).Data;
     this.setState({ coinList, favorites: this.validateFavorites(coinList) });
+  };
+
+  fetchTopCoins = async () => {    
+    let coins = await cmc.ticker({ limit: 100 });
+    const topCoins = {};
+    //debugger
+
+    coins.forEach( coin => {   
+      if(coin.symbol === 'MIOTA') {
+        topCoins['IOT'] = 'IOT';
+      }  else if(coin.symbol === 'INB') {
+        //topCoins['INB'] = 'IOT';
+      }
+      else {
+        topCoins[coin.symbol] = coin.symbol;
+      }
+    });
+
+    //console.log(topCoinList[0])
+    this.setState({ topCoinList: topCoins });
   };
 
   fetchPrices = async () => {
@@ -148,6 +171,7 @@ class App extends Component {
         this.fetchHistorical();
       }
     );
+
     localStorage.setItem(
       'cryptoDash',
       JSON.stringify({
@@ -157,6 +181,7 @@ class App extends Component {
     );
   };
 
+  //{Search.call(this)}
   settingsContent = () => {
     return (
       <div>
@@ -165,10 +190,10 @@ class App extends Component {
           {CoinList.call(this, true)}
           <CenterDiv>
             <ConfirmButton onClick={this.confirmFavorites}>
-              Confirm Favorites
+              Save Favorites
             </ConfirmButton>
           </CenterDiv>
-          {Search.call(this)}
+          
           {CoinList.call(this)}
         </div>
       </div>
@@ -230,6 +255,7 @@ class App extends Component {
     }
     this.handleFilter(inputValue);
   };
+
   render() {
     return (
       <AppLayout>

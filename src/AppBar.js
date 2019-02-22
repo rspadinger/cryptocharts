@@ -17,31 +17,31 @@ const ControlButton = styled.div`
 const Bar = styled.div`
   display: grid;
   margin-bottom: 40px;
-  grid-template-columns: 180px auto 100px 100px;
+  grid-template-columns: 180px auto 130px 130px;
 `;
 
 export default function() {
   return (
     <Bar>
-      <Logo>CryptoDash</Logo>
+      <Logo>Crypto Dashboard</Logo>
       <div />
       {!this.state.firstVisit && (
-        <ControlButton
+        <ControlButton style={{marginRight:'0px'}}
           onClick={() => {
             this.setState({ page: 'dashboard' });
           }}
           active={this.displayingDashboard()}
         >
-          Dashboard
+          Favorite Coins 
         </ControlButton>
       )}
-      <ControlButton
+      <ControlButton style={{marginRight:'0px'}}
         onClick={() => {
           this.setState({ page: 'settings' });
         }}
         active={this.displayingSettings()}
       >
-        Settings
+        Select Coins
       </ControlButton>
     </Bar>
   );

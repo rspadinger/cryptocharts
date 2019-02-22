@@ -1,4 +1,5 @@
 import {lightTheme} from './Style';
+
 export default {
   lang: {
     thousandsSep: ','
